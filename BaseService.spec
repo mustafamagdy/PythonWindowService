@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['WindowsService.py'],
+a = Analysis(['BaseService.py'],
              pathex=['D:\\Workspace\\python-windowsservice\\PythonWindService'],
              binaries=[],
              datas=[],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='WindowsService',
+          name='BaseService',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

@@ -1,0 +1,14 @@
+{
+    "service1" :{
+        "schedule":"*/1 * * * *",
+        "status" : "run"
+    },
+    "service2" :{
+        "schedule":"*/2 * * * *",
+        "status" : "run"
+    },
+    "service3" :{
+        "schedule":"*/1 * * * *",
+        "status" : "run"
+    }
+}

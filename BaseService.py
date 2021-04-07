@@ -1,8 +1,12 @@
 from datetime import datetime
+from os import system
 import croniter
 import time
 from abc import ABCMeta, abstractmethod
 from threading import Thread
+from multiprocessing import Process, process
+import json
+import sys
 
 class ScheduleTask(Thread):
   _nextRun = datetime.now()
@@ -40,59 +44,63 @@ class ScheduleTask(Thread):
 
 class SampleService1(ScheduleTask, Thread):
   def __init__(self):
-    ScheduleTask.__init__(self, "*/2 * * * *")
-
-  
-  def process(self):
-    _now = datetime.now()
-    print('service 1 ' + self.getName() + ' -> ' + _now.strftime("%m/%d/%Y, %H:%M"))
-
-
-class SampleService2(ScheduleTask, Thread):
-  def __init__(self):
-    ScheduleTask.__init__(self, "*/5 * * * *")
-
-  
-  def process(self):
-    _now = datetime.now()
-    print('service 2 ' + self.getName() + ' -> ' + _now.strftime("%m/%d/%Y, %H:%M"))
-
-class SampleService3(ScheduleTask, Thread):
-  def __init__(self):
+    with open('D:\\config.json') as configSchema:
+      config = json.load(configSchema)
+    
     ScheduleTask.__init__(self, "*/1 * * * *")
 
   
   def process(self):
+    with open('D:\\config.json') as configSchema:
+      config = json.load(configSchema)
+    if(config["service1"]["status"] == "stop"):
+      return
+
     _now = datetime.now()
-    print('service 3 ' + self.getName() + ' -> ' + _now.strftime("%m/%d/%Y, %H:%M"))
+    print('service 1 ' + self.getName() + ' -> ' + _now.strftime("%m/%d/%Y, %H:%M")+ "\n")
+    f = open("D:\\python_services_log\\service1.txt", "a")
+    f.write('service 1 ' + self.getName() + ' -> ' + _now.strftime("%m/%d/%Y, %H:%M")+ "\n")
+    f.close()
 
 
-if __name__ == '__main__':
-  c1 = SampleService1()
-  c2 = SampleService2()
-  c3 = SampleService3()
+class SampleService2(ScheduleTask, Thread):
+  def __init__(self):
+    with open('D:\\config.json') as configSchema:
+      config = json.load(configSchema)
+    ScheduleTask.__init__(self, config["service2"]["schedule"])
 
-  # try:
-  c1.start()
-  c2.start()
-  c3.start()
-
-
-  threads = []
-  threads.append(c1)
-  threads.append(c2)
-  threads.append(c3)
-
-  for t in threads:
-    t.join()
   
-  while True:
-    time.sleep(2)
-    _min = datetime.now().minute()
-    print(_min)
-    if(_min == 44):
-      c1.terminate()
+  def process(self):
+    with open('D:\\config.json') as configSchema:
+      config = json.load(configSchema)
+    if(config["service2"]["status"] == "stop"):
+      return
+    try:
+        _now = datetime.now()
+        raise Exception("error in service 2")
+    except:
+      print('service 2 error')
+      _now = datetime.now()
+      f = open("D:\\python_services_log\\service2.txt", "a")
+      f.write('service 2 error' + ' -> ' + _now.strftime("%m/%d/%Y, %H:%M")+ "\n")
+      f.close()
 
-  # except Exception as e:
-  #     print("Oops!", e.__class__, "occurred.")
-  #     print()
+
+class SampleService3(ScheduleTask, Thread):
+  def __init__(self):
+    with open('D:\\config.json') as configSchema:
+      config = json.load(configSchema)
+    ScheduleTask.__init__(self, config["service3"]["schedule"])
+
+  
+  def process(self):
+    with open('D:\\config.json') as configSchema:
+      config = json.load(configSchema)
+    if(config["service3"]["status"] == "stop"):
+      return        
+    _now = datetime.now()
+    print('service 3 ' + self.getName() + ' -> ' + _now.strftime("%m/%d/%Y, %H:%M")+ "\n")
+    f = open("service3.txt", "a")
+    f.write('service 3 ' + self.getName() + ' -> ' + _now.strftime("%m/%d/%Y, %H:%M" + "\n"))
+    f.close()
+

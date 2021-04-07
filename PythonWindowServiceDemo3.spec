@@ -3,11 +3,11 @@
 block_cipher = None
 
 
-a = Analysis(['WindowsService.py'],
+a = Analysis(['PythonWindowServiceDemo3.py'],
              pathex=['D:\\Workspace\\python-windowsservice\\PythonWindService'],
              binaries=[],
              datas=[],
-             hiddenimports=[],
+             hiddenimports=['win32timezone'],
              hookspath=[],
              runtime_hooks=[],
              excludes=[],
@@ -23,7 +23,7 @@ exe = EXE(pyz,
           a.zipfiles,
           a.datas,
           [],
-          name='WindowsService',
+          name='PythonWindowServiceDemo3',
           debug=False,
           bootloader_ignore_signals=False,
           strip=False,

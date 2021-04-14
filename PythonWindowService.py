@@ -10,8 +10,8 @@ from threading import Thread
 
 
 class PythonWindowServiceDemo(win32serviceutil.ServiceFramework):
-    _svc_name_ = "Python-Windows-Service-Demo-Test3"
-    _svc_display_name_ = "Python-windows-service-demo-test 3"
+    _svc_name_ = "PythonWindowsService"
+    _svc_display_name_ = "Python-windows-service"
 
     def __init__(self, args):
         win32serviceutil.ServiceFramework.__init__(self, args)
